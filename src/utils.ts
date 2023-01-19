@@ -5,6 +5,18 @@ export type message_class={
     type: string;
 }
 
+export type hello_class={
+    "type": string,
+    "version": string,
+    "agent": string,
+  }
+
+export type error_class={
+    "type": string,
+    "name": string,
+    "message": string,
+  }
+
 export const isJsonString= (str:string) =>{
     try {
         JSON.parse(str);
