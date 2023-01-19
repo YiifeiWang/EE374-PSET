@@ -17,6 +17,12 @@ socket.connect(SERVER_PORT,SERVER_HOST, async () =>{
         "agent": "Marabu-Core Client 0.9"
     }
     let hello_str:string = canonicalize(hello_message);
+    let hello_message2:hello_class = {
+        "type": "hello",
+        "version": "0.9.1",
+        "agent": "Marabu-Core Client 0.9"
+    }
+    let hello_str2:string = canonicalize(hello_message2);
     let message1 = 'Hello, server!';
     let message1_json = make_message_json(message1,'data');
 

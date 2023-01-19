@@ -115,6 +115,7 @@ const server = net.createServer((socket)=>{
     });
     socket.on('close',()=>{
         console.log(`Client ${address} disconnected`);
+        init_mark = false;
     });
 });
 
