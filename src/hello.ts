@@ -1,8 +1,30 @@
+import { canonicalize, canonicalizeEx } from 'json-canonicalize';
 
-let x: number = 5;
-x = 7;
+type taclass={
+    ta: string;
+    type: string;
+}
 
-const BIND_PORT = 18018
-const BIND_IP = '0.0.0.0'
 
-console.log(typeof x);
+export const build_taclass = (params: taclass) => {
+return params;
+};
+
+let taobject = build_taclass({ta: 'Kenan',
+type: "ta"})
+
+let tajson = canonicalize(taobject);
+
+console.log(typeof(tajson));
+
+const isJsonString= (str:string) =>{
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+};
+
+
+console.log(isJsonString(tajson));

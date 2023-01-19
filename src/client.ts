@@ -9,9 +9,9 @@ const socket = new net.Socket();
 socket.connect(SERVER_PORT,SERVER_HOST, async () =>{
     console.log('Connectd to server');
     await delay(3000);
-    socket.write('Hello, server!\n Love ');
-    await delay(3000);
-    socket.write('Client\n');
+    socket.write('Hello, server!\n');
+    // await delay(3000);
+    // socket.write('Love Client\n');
 })
 
 socket.on('data', (data)=>{
