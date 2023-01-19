@@ -69,7 +69,7 @@ const server = net.createServer((socket)=>{
                 if (isJsonString(message)){
                     if (init_mark){
                         let message_obj = JSON.parse(message);
-                        if (message_obj.type != 'hello'){
+                        if (message_obj.type != 'hello' || message_obj.version!= '0.9.0'){
                             let error_message:error_class = {
                                 "type": "error",
                                 "name": "INVALID_HANDSHAKE",
