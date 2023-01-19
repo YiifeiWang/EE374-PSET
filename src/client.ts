@@ -34,15 +34,19 @@ socket.on('data', (data)=>{
         for (const message of messages.slice(0,-1)){
             if (isJsonString(message)){
                 console.log(`Server sent: ${message}`);
-                let message_orig = JSON.parse(message);
+                let message_obj = JSON.parse(message);
 
                 // deal with the handshake error
-                if (message_orig.type == 'error'){
-                    if (message_orig.name == 'INVALID_HANDSHAKE'){
+                if (message_obj.type == 'error'){
+                    if (message_obj.name == 'INVALID_HANDSHAKE'){
                         socket.emit('close');
                     }
-                    if (message_orig.name == 'INVALID_FORMAT'){
+                    if (message_obj.name == 'INVALID_FORMAT'){
                         socket.emit('error',message);
+                    }
+                }else{
+                    if (message_obj.type == 'getpeers'){
+                        socket.emit('getpeers');
                     }
                 }
             }else{
@@ -59,6 +63,19 @@ socket.on('data', (data)=>{
     buffer = messages[messages.length-1];
 });
 
+socket.on('getpeers', ()=>{
+    // send peers to server
+    let peer_object = {
+        "type": "peers",
+        "peers": [
+          "dionyziz.com:18018" /* dns */,
+          "138.197.191.170:18018" /* ipv4 */,
+          "[fe80::f03c:91ff:fe2c:5a79]:18018" /* ipv6 */
+        ]
+      };
+      let peer_str:string = canonicalize(peer_object);
+      socket.write(`${peer_str}\n`);
+});
 socket.on('error', (error)=>{
     console.log(`Server error: ${error}`);
 });
