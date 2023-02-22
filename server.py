@@ -4,7 +4,8 @@ import time
 import utils
 
 # define constants
-HOST = '127.0.0.1'#socket.gethostbyname(socket.gethostname())
+# HOST = '127.0.0.1'#socket.gethostbyname(socket.gethostname())
+HOST = ''
 PORT = 18018
 FORMAT = "utf-8"
 RECVSIZE = 10
