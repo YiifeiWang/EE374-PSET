@@ -8,7 +8,7 @@ class message:
     def __init__(self, message_type='hello', input_dict={}):
         self.message_type = message_type
         self.input_dict = input_dict
-        self.content = ''
+        self.content = {}
         self.content_json = '' # JSON
         self.content_binary = '' # binary
         self.convert2content() # read input_dict based on message_type to write on content
@@ -26,6 +26,13 @@ class message:
             #    "description": "The note field in the block message contains more than 128 characters."}
         elif self.message_type == 'getpeers':
             self.content = {}
+        elif self.message_type == 'peers':
+            self.content = self.input_dict
+            # input_dict_example = {"peers": [
+    # "dionyziz.com:18018" /* dns */,
+    # "138.197.191.170:18018" /* ipv4 */,
+    # "[fe80::f03c:91ff:fe2c:5a79]:18018" /* ipv6 */
+#   ]}
 
         self.content['type'] = self.message_type
 
