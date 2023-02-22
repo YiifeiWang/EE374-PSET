@@ -15,8 +15,6 @@ BOOTSTRAP_PEER = ['45.63.84.226:18018', '45.63.89.228:18018', '144.202.122.8:180
 message_hello = utils.message(message_type='hello', input_dict={}).content_json
 message_getpeer = utils.message(message_type='getpeer', input_dict={}).content_json
 
-peer_list = BOOTSTRAP_PEER.copy()
-
 def handle_client(conn, addr): #conn stands for connect
     # handle inidividual connection for each client
     print(f"[NEW CONNECTION] {addr} connected.")
@@ -27,6 +25,7 @@ def handle_client(conn, addr): #conn stands for connect
     msg_recv_iter = iter(msg_recv)
     connected = True
     first_connection = True
+    peer_list = BOOTSTRAP_PEER.copy()
     while connected:
         msg = next(msg_recv_iter)
         print(f"[INFO] receive {msg}") # print the message for debugging
@@ -61,6 +60,8 @@ def handle_client(conn, addr): #conn stands for connect
                 msg = next(msg_recv_iter)
                 print(f"[INFO] receive {msg}") # print the message for peer list
                 # assume that msg is with valid format
+                msg_ins = utils.message()
+                msg_ins.build_from_json(msg)
                 peer_list += msg_ins.input_dict['peers']
                 peer_list = list(set(peer_list)) # remove duplicates
                 print(f"[INFO] peer list: {peer_list}")

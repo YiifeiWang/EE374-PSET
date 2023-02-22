@@ -24,17 +24,16 @@ print(msg)
 # send hello message
 msg = f"{message_hello}\n"
 s.send(bytes(msg,FORMAT))
-msg = next(msg_recv_iter) # receive the hello message
-print(msg)
 msg = next(msg_recv_iter) # receive the getpeer message
 print(msg)
+print('copy peer list')
 peer_list = BOOTSTRAP_PEER.copy()
-peer_list.append(f'{HOST}:{PORT}')
+# peer_list.append(f'{HOST}:{PORT}')
 msg = utils.message(message_type='peers', input_dict={'peers':peer_list}).content_json
 msg = f"{msg}\n"
 print(msg)
-s.send(bytes(msg,FORMAT))
 print('set peer list')
+s.send(bytes(msg,FORMAT))
 # time.sleep(1)
 # s.send(bytes(DISCONNECT_MESSAGE,FORMAT))
 s.close()
