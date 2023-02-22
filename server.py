@@ -47,7 +47,7 @@ def handle_client(conn, addr): #conn stands for connect
         msg_ins = utils.message()
         msg_ins.build_from_json(msg)
         if first_connection:
-            if msg_ins.message_type != 'hello' or msg_ins.content != message_hello.content:
+            if msg_ins.message_type != 'hello' or msg_ins.content != utils.message(message_type='hello', input_dict={}).content:
                 print('[INFO] invalid hello message')
                 msg = utils.message(message_type='error', input_dict={"name": "INVALID_HANDSHAKE","description": ""}).content_json
                 msg = f"{msg}\n"
@@ -57,17 +57,22 @@ def handle_client(conn, addr): #conn stands for connect
                 print('[INFO] valid hello message')
                 msg = f"{message_getpeer}\n"
                 conn.send(bytes(msg,FORMAT)) # send getpeer message
-                print('[INFO] send getpeer message')
-                msg = next(msg_recv_iter)
-                print(f"[INFO] receive {msg}") # print the message for peer list
-                # assume that msg is with valid format
-                msg_ins = utils.message()
-                msg_ins.build_from_json(msg)
-                peer_list += msg_ins.input_dict['peers']
-                peer_list = list(set(peer_list)) # remove duplicates
-                print(f"[INFO] peer list: {peer_list}")
+                # print('[INFO] send getpeer message')
+                # msg = next(msg_recv_iter)
+                # print(f"[INFO] receive {msg}") # print the message for peer list
+                # # assume that msg is with valid format
+                # msg_ins = utils.message()
+                # msg_ins.build_from_json(msg)
+                # peer_list += msg_ins.input_dict['peers']
+                # peer_list = list(set(peer_list)) # remove duplicates
+                # print(f"[INFO] peer list: {peer_list}")
         first_connection = False
 
+        if msg_ins.message_type == 'getpeer':
+            msg = utils.message(message_type='peers', input_dict={'peers':peer_list}).content_json
+            msg = f"{msg}\n"
+            print(f"[INFO] send {msg}")
+            conn.send(bytes(msg,FORMAT))
         
         if msg == DISCONNECT_MESSAGE:
             connected = False
