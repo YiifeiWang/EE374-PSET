@@ -47,9 +47,12 @@ def handle_client(conn, addr): #conn stands for connect
         msg_ins = utils.message()
         msg_ins.build_from_json(msg)
         if first_connection:
-            if msg_ins.message_type != 'hello' or msg_ins.content['version'] != '0.9.0':
+            if msg_ins.message_type != 'hello':
                 print('[INFO] invalid hello message')
-                msg = utils.message(message_type='error', input_dict={"name": "INVALID_HANDSHAKE","description": ""}).content_json
+                if msg_ins.content['version'] != '0.9.0':
+                    msg = utils.message(message_type='error', input_dict={"name": "INVALID_FORMAT","description": ""}).content_json
+                else:
+                    msg = utils.message(message_type='error', input_dict={"name": "INVALID_HANDSHAKE","description": ""}).content_json
                 msg = f"{msg}\n"
                 conn.send(bytes(msg,FORMAT))
                 connected = False
