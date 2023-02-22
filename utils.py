@@ -46,7 +46,7 @@ class message:
         self.content_json = json_str
         self.content = json.loads(json_str)
         self.message_type = self.content['type']
-        self.input_dict = self.content
+        # self.input_dict = self.content
 
 class message_receiver:
     # create an iterator to receive message
