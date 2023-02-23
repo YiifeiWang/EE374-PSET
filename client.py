@@ -1,8 +1,9 @@
 import socket
 import utils
 import time
+import json
 
-HOST = '127.0.0.1'#socket.gethostbyname(socket.gethostname())
+HOST = ''#socket.gethostbyname(socket.gethostname())
 PORT = 18018
 FORMAT = "utf-8"
 RECVSIZE = 10
@@ -22,18 +23,28 @@ msg = next(msg_recv_iter)
 print(msg)
 # implement PSET1 1.7.a
 # send hello message
-msg = f"{message_hello}\n"
+# msg = f"{message_hello}\n"
+str = json.dumps({"type":"hello"})
+msg = f"{str}\n"
 s.send(bytes(msg,FORMAT))
-msg = next(msg_recv_iter) # receive the getpeer message
-print(msg)
-print('copy peer list')
-peer_list = BOOTSTRAP_PEER.copy()
-# peer_list.append(f'{HOST}:{PORT}')
-msg = utils.message(message_type='peers', input_dict={'peers':peer_list}).content_json
-msg = f"{msg}\n"
-print(msg)
-print('set peer list')
+# send getpeers message
+msg = f"{message_getpeer}\n"
 s.send(bytes(msg,FORMAT))
-# time.sleep(1)
-# s.send(bytes(DISCONNECT_MESSAGE,FORMAT))
+# receive peers message
+msg = next(msg_recv_iter)
+print(msg)
+msg = f"{DISCONNECT_MESSAGE}\n"
+s.send(bytes(msg,FORMAT))
 s.close()
+
+
+# msg = next(msg_recv_iter) # receive the getpeer message
+# print(msg)
+# print('copy peer list')
+# peer_list = BOOTSTRAP_PEER.copy()
+# # peer_list.append(f'{HOST}:{PORT}')
+# msg = utils.message(message_type='peers', input_dict={'peers':peer_list}).content_json
+# msg = f"{msg}\n"
+# print(msg)
+# print('set peer list')
+# s.send(bytes(msg,FORMAT))

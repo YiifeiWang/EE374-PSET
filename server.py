@@ -49,17 +49,20 @@ def handle_client(conn, addr): #conn stands for connect
         if first_connection:
             if msg_ins.message_type != 'hello':
                 print('[INFO] invalid hello message')
-                if msg_ins.content['version'] != '0.9.0':
-                    msg = utils.message(message_type='error', input_dict={"name": "INVALID_FORMAT","description": ""}).content_json
-                else:
-                    msg = utils.message(message_type='error', input_dict={"name": "INVALID_HANDSHAKE","description": ""}).content_json
+                msg = utils.message(message_type='error', input_dict={"name": "INVALID_HANDSHAKE","description": ""}).content_json
                 msg = f"{msg}\n"
                 conn.send(bytes(msg,FORMAT))
                 connected = False
             else:
-                print('[INFO] valid hello message')
-                msg = f"{message_getpeer}\n"
-                conn.send(bytes(msg,FORMAT)) # send getpeer message
+                if 'version' not in msg_ins.content or msg_ins.content['version'] != '0.9.0':
+                    msg = utils.message(message_type='error', input_dict={"name": "INVALID_FORMAT","description": ""}).content_json
+                    msg = f"{msg}\n"
+                    conn.send(bytes(msg,FORMAT))
+                    connected = False
+                else:
+                    print('[INFO] valid hello message')
+                    # msg = f"{message_getpeer}\n"
+                    # conn.send(bytes(msg,FORMAT)) # send getpeer message
                 # print('[INFO] send getpeer message')
                 # msg = next(msg_recv_iter)
                 # print(f"[INFO] receive {msg}") # print the message for peer list
