@@ -2,6 +2,8 @@ import socket
 import threading
 import time
 import utils
+import hashlib
+import json
 
 # define constants
 # HOST = '127.0.0.1'#socket.gethostbyname(socket.gethostname())
@@ -11,10 +13,26 @@ FORMAT = "utf-8"
 RECVSIZE = 10
 DISCONNECT_MESSAGE = '!DISCONNECT'
 BOOTSTRAP_PEER = ['45.63.84.226:18018', '45.63.89.228:18018', '144.202.122.8:18018']
+DATA_PATH = 'data/'
+OBJ_NAME = 'obj.json'
+# known_obj = []
 
 # predefine messages
 message_hello = utils.message(message_type='hello', input_dict={}).content_json
 message_getpeer = utils.message(message_type='getpeer', input_dict={}).content_json
+
+def save_obj(known_obj):
+    # implement PSET2 1.1
+    # save the known_obj to a json file
+    with open (DATA_PATH+OBJ_NAME, 'w+') as f:
+        json.dump(known_obj, f)
+
+def load_obj():
+    # implement PSET2 1.1
+    # load the known_obj from a json file
+    with open (DATA_PATH+OBJ_NAME, 'r') as f:
+        known_obj = json.load(f)
+    return known_obj
 
 def handle_client(conn, addr): #conn stands for connect
     # handle inidividual connection for each client
