@@ -1,6 +1,8 @@
 # test.py
 
 from utils import message
+import hashlib
+import json
 
 # test the class message
 
@@ -26,6 +28,21 @@ def test_class_message():
         message_tmp.build_from_json(message_ins.content_json)
         print(message_tmp.content_json)
 
+def test_hash():
+    # implement PSET2 1.2
+    # hashlib.blake2s
+    genesis_block = {
+  "T": "00000000abc00000000000000000000000000000000000000000000000000000",
+  "created": 1671062400,
+  "miner": "Marabu",
+  "nonce": "000000000000000000000000000000000000000000000000000000021bea03ed",
+  "note": "The New York Times 2022-12-13: Scientists Achieve Nuclear Fusion Breakthrough With Blast of 192 Lasers",
+  "previd": None,
+  "txids": [],
+  "type": "block"
+}
+    print(hashlib.blake2s(json.dumps(genesis_block).encode('utf-8')).hexdigest())
 
 if __name__ == '__main__':
-    test_class_message()
+    # test_class_message()
+    test_hash()
